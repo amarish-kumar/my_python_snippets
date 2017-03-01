@@ -187,7 +187,135 @@ except ZeroDivisionError:
 finally:
     print "Cleaning"
 
+# Regular Expresions
+import re 
+if re.match("python","python"):
+    print "python", "matchea con", "python"
+# 1 character followed by ython
+if re.match(".ython","python"):
+    print "ython", "matchea con", "python"
+if re.match(".ython","cython"):
+    print "ython", "matchea con", "cython"
+# 3 characters followed by a point
+if re.match("...\.","abc."):
+    print "...\.", "matchea con", "abc."
+if re.match("(p|c|j)ython","python"):
+    print "(p|c|j)ython", "matchea con", "python"
+if re.match("[pcj]ython","python"):
+    print "([pcj]ython", "matchea con", "python"
+# python followed by a digit 
+if re.match("python[0-9]","python0"):
+    print "(python[0-9]", "matchea con", "python0"
+# python followed by a digit or letter or upper letter
+if re.match("python[0-9a-zA-Z]","pythonY"):
+    print "(python[0-9a-zA-Z]", "matchea con", "pythonY"
+# python followed by something different of a lower letter o digit 
+if re.match("python[^0-9a-z]","pythonY"):
+    print "(python[^0-9a-z]", "matchea con", "pythonY"
+# a digit
+if re.match("python[\d]","python6"):
+    print "(python[\d]", "matchea con", "python6"
+# a non-digit
+if re.match("python[\D]","pythonA"):
+    print "(python[\D]", "matchea con", "pythonA"
+# a alpha-numeric character
+if re.match("python[\w]","python8"):
+    print "(python[\w]", "matchea con", "python8"
+# a non-alpha-numeric character
+if re.match("python[\W]","python-"):
+    print "(python[\W]", "matchea con", "python-"
+# a blank character
+if re.match("python[\s]","python "):
+    print "(python[\s]", "matchea con", "python "
+# a non-blank character
+if re.match("python[\S]","python0"):
+    print "(python[\S]", "matchea con", "python0"
+# 1 or more than 1 ocurrencies
+if re.match("python+","pythonnn"):
+    print "python+", "matchea con", "pythonnn"
+# 0 or more than 1 ocurrencies
+if re.match("python*","pytho"):
+    print "python*", "matchea con", "pytho"
+# n has to appear between 3 and 8 times
+if re.match("python{3,8}","pythonnnnnn"):
+    print "python{3,8}", "matchea con", "pythonnnnnn"
+# start with http
+if re.match("^http","http://python.com"):
+    print "^http", "matchea con", "http://python.com"
+# end with .com
+if re.match("\com$","http://python.com"):
+    print ".com$", "matchea con", "http://python.com"
+
+# Sockets
+import socket
+
+# server-side
+sock_server = socket.socket()
+sock_server.bind(("localhost",9999))
+sock_server.listen(10)
+
+sock_c, addr = sock_server.accept()
+
+while True:
+    text = sock_c.recv(1024)
+    if text == "quit":
+        break
+    print "Recived:", text
+    sock_c.send(text)
+
+print "bye!"
+sock_c.close()
+sock_server.close()
+
+# client-side
+sock_client = socket.socket()
+sock_client.connect(("localhost",9999))
+
+while True:
+    text = raw_input("> ")
+    if text == "quit":
+        break
+    sock_client.send(text)
+
+print "bye!"
+sock_client.close()
+
+# Interacting with WEBS
+
+import urllib2, urllib
+
+def download_progress(count, block_size, total_size):
+    print "Percent downloaded: %d " % int(count * blockSize * 100 / totalSize)
+
+try:
+    params = urllib.urlencode({
+        "user": "jonh",
+        "password": "passW0rd!" 
+    })
+    # POST
+    f = urllib2.urlopen("http://www.pyhton.org/", params)
+    # GET
+    f2 = urllib2.urlopen("http://www.pyhton.org/" + "?" + params)
+    # DOWNLOAD
+    f3 = urllib.urlretrieve("http://www.pyhton.org/file.zip","file.zip",reporthook=download_progress)
+
+    # Using Request
+    ua = "Mozilla/5.0 (compatible; Konqueror/3.5.8; Linux)"
+    h = {"User-Agent": ua} 
+    r = urllib2.Request("http://www.python.org", headers=h) 
+    f4 = urllib2.urlopen(r) 
+
+    print f.read()
+    f.close()
+    f2.close()
+    f3.close()
+    f4.close()
+except HTTPError as e:
+    print "ERROR: ", e.code
+except URLError as e:
+    print "ERROR: ", e.reason
 
 
+ 
 
 
